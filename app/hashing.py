@@ -1,5 +1,7 @@
-from app import app,db
+from app import app,db,mail
 from app.models import Data
+from config import ADMINS
+from flask_mail import Message
 import os
 import sys
 import hashlib
@@ -7,7 +9,7 @@ import requests
 import shutil
 
 
-def md5(uuid, url):
+def md5(uuid, url, email):
     fname = 'file_' + uuid
     filepath = 'app/tmp/' + fname
     try:
@@ -27,9 +29,13 @@ def md5(uuid, url):
         state = "failed"
     upd = Data.query.filter_by(id = uuid).update({'state': state, 'md5_hash': md5_hash})
     db.session.commit()
+    if state == "finished" and email:
+        msg = Message('Your md5 hash is done' , sender = ADMINS[0], recipients = email)
+        msg.body = 'Your md5 hash: ' + md5_hash
+        mail.send(msg)
     
 
 
 if __name__ == '__main__':
-    uuid, url = sys.argv[1:]
-    md5(uuid, url)
+    uuid, url, email = sys.argv[1:]
+    md5(uuid, url, email)

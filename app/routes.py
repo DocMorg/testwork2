@@ -14,16 +14,19 @@ def submit():
         new = Data()
         new.id = uuid.uuid1().hex
         new.url = request.form.get('url')
+        new.email = request.form.get('email')
+        if not new.email:
+            new.email = ""
         if new.url:
             subprocess.Popen([sys.executable, 'app\hashing.py']
-                       + [new.id, new.url],
+                       + [new.id, new.url, new.email],
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
                        env=os.environ.copy())
         else:
             return(jsonify('Error 400 url not given'))
         new.md5_hash = ""
-        new.email = request.form.get('email')
+        
         new.state = "working"
         db.session.add(new)
         db.session.commit()
