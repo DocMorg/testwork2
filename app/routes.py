@@ -37,6 +37,6 @@ def check():
     if not data:
         return('Error 404 id not found')
     if data.state == 'finished':
-        return('state: ' + data.state + ', \nhash: ' + data.md5_hash)
+        return('state: ' + data.state + ', \nhash: ' + data.md5_hash + '\nurl: ' + data.url)
     else:
         return('state: ' + data.state)
