@@ -27,13 +27,12 @@ def md5(uuid, url, email):
         state = "finished"
     except Exception:
         state = "failed"
-    upd = Data.query.filter_by(id = uuid).update({'state': state, 'md5_hash': md5_hash})
+    Data.query.filter_by(id = uuid).update({'state': state, 'md5_hash': md5_hash})
     db.session.commit()
     if state == "finished" and email:
         msg = Message('Your md5 hash is done' , sender = ADMINS[0], recipients = email)
         msg.body = 'Your md5 hash: ' + md5_hash
         mail.send(msg)
-    
 
 
 if __name__ == '__main__':
