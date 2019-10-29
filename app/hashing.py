@@ -1,4 +1,4 @@
-from app import app,db,mail
+from app import db,mail
 from app.models import Data
 from config import ADMINS
 from flask_mail import Message
