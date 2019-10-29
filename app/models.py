@@ -7,7 +7,6 @@ class Data(db.Model):
     email = db.Column(db.String(120), index=True)
     state = db.Column(db.String(12))
     md5_hash = db.Column(db.String(128))
-    
 
     def __repr__(self):
         return "<Data {}>".format(self.email) 
